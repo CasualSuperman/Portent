@@ -5,5 +5,5 @@ import java.util.List;
 public interface Archetype {
 	String getName();
 
-	List<Artifact> getTemplates();
+	List<Artifact> getArtifacts();
 }

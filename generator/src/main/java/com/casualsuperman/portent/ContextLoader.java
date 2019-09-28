@@ -15,6 +15,7 @@ public class ContextLoader {
 	private static final TypeReference<HashMap<String, Object>> TYPE = new TypeReference<HashMap<String, Object>>() {};
 
 	private final File root;
+	private final Map<String, Object> baseVars;
 
 	private final ObjectMapper mapper = new ObjectMapper();
 
@@ -24,6 +25,7 @@ public class ContextLoader {
 
 	public Map<String, Object> getContext(Path in) throws IOException {
 		Map<String, Object> vars = new HashMap<>();
+		vars.putAll(baseVars);
 		vars.putAll(getPathVars(in));
 		vars.putAll(getContents(new BufferedInputStream(new FileInputStream(root.toPath().resolve(in).toFile()))));
 		return vars;

@@ -25,12 +25,12 @@ public class ArchetypeLocatorTest {
 		assertThat(locator.getTemplates(), allOf(
 				aMapWithSize(2),
 				hasEntry(equalTo("endpoint"), allOf(
-						hasName("endpoint"), Matchers.<Archetype>hasProperty("templates", containsInAnyOrder(
+						hasName("endpoint"), Matchers.<Archetype>hasProperty("artifacts", containsInAnyOrder(
 								hasProperty("path", equalToObject(Paths.get("__filename__.java")))
 						))
 				)),
 				hasEntry(equalTo("search"), allOf(
-						hasName("search"), hasProperty("templates", containsInAnyOrder(
+						hasName("search"), hasProperty("artifacts", containsInAnyOrder(
 								hasProperty("path", equalToObject(Paths.get("Demo.java"))),
 								hasProperty("path", equalToObject(Paths.get("subdir/SecondDemo.java")))
 						))

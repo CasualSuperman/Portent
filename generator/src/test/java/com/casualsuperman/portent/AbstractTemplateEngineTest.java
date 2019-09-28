@@ -62,6 +62,6 @@ public class AbstractTemplateEngineTest {
 	}
 
 	private static Context ctx(Map<String, Object> map) {
-		return new PojoContext(map);
+		return new MapBackedContext(map);
 	}
 }

@@ -28,7 +28,7 @@ public class ContextLoader {
 		vars.putAll(baseVars);
 		vars.putAll(getPathVars(in));
 		vars.putAll(getContents(new BufferedInputStream(new FileInputStream(root.toPath().resolve(in).toFile()))));
-		return new PojoContext(vars);
+		return new MapBackedContext(vars);
 	}
 
 	protected Map<String, String> getPathVars(Path in) {

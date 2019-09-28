@@ -2,11 +2,13 @@ package com.casualsuperman.portent;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 import static com.casualsuperman.portent.AbstractTemplateEngine.templateFilename;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 public class AbstractTemplateEngineTest {
 	@Test
@@ -48,6 +50,15 @@ public class AbstractTemplateEngineTest {
 		String filename = "I own a __comp__any__ branded __food__ company!";
 		Context someContext = ctx("comp_any", "SubWay", "food", "sandwich");
 		assertEquals("I own a __comp__any__ branded __food__ company!", templateFilename(filename, someContext));
+	}
+
+	@Test
+	public void testNonStringVariable() {
+		String filename = "I own a __company__!";
+		Object o = mock(Object.class);
+		when(o.toString()).thenReturn("Nintendo Switch");
+		Context someContext = ctx(Collections.singletonMap("company", o));
+		assertEquals("I own a Nintendo Switch!", templateFilename(filename, someContext));
 	}
 
 	private static Context ctx(String... pairs) {

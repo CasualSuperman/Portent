@@ -23,12 +23,12 @@ public class ContextLoader {
 		return mapper.readValue(is, TYPE);
 	}
 
-	public Map<String, Object> getContext(Path in) throws IOException {
+	public Context getContext(Path in) throws IOException {
 		Map<String, Object> vars = new HashMap<>();
 		vars.putAll(baseVars);
 		vars.putAll(getPathVars(in));
 		vars.putAll(getContents(new BufferedInputStream(new FileInputStream(root.toPath().resolve(in).toFile()))));
-		return vars;
+		return new PojoContext(vars);
 	}
 
 	protected Map<String, String> getPathVars(Path in) {

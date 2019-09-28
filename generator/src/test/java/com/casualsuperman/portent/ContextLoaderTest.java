@@ -20,8 +20,8 @@ public class ContextLoaderTest {
 	public void testContextLoader() throws IOException {
 		ContextLoader loader = new ContextLoader(new File("src/test/example/src/main/java"),
 				Collections.singletonMap("wax", Collections.singletonMap("quail", "multi-jump")));
-		Map<String, Object> context = loader.getContext(Paths.get("mydir", "Instance.search"));
-		assertThat(context, allOf(
+		Context context = loader.getContext(Paths.get("mydir", "Instance.search"));
+		assertThat(context.getVariables(), allOf(
 				aMapWithSize(4),
 				(Matcher) hasEntry(equalTo("wax"), allOf(aMapWithSize(1), hasEntry("quail", "multi-jump"))),
 				hasEntry("filename", "Instance"),

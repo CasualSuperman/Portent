@@ -1,5 +1,8 @@
 <project>
 	<modelVersion>4.0.0</modelVersion>
+	<properties>
+		<jackson.version>2.9.10</jackson.version>
+	</properties>
 
 	<parent>
 		<groupId>com.casualsuperman.portent</groupId>
@@ -9,4 +12,17 @@
 	</parent>
 
 	<artifactId>generator</artifactId>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-core</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
+	</dependencies>
 </project>

@@ -1,5 +1,6 @@
 package com.casualsuperman.portent;
 
+import com.casualsuperman.portent.util.FilenameUtils;
 import lombok.RequiredArgsConstructor;
 
 import java.nio.file.FileVisitResult;
@@ -19,7 +20,7 @@ public class InstanceLocator extends SimpleFileVisitor<Path> {
 	@Override
 	public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) {
 		String name = file.getFileName().toString();
-		String extension = getExtension(name);
+		String extension = FilenameUtils.getExtension(name);
 		if (templateTypes.contains(extension)) {
 			instances.computeIfAbsent(extension, t -> new ArrayList<>()).add(root.relativize(file));
 		}
@@ -30,11 +31,4 @@ public class InstanceLocator extends SimpleFileVisitor<Path> {
 		return Collections.unmodifiableMap(instances);
 	}
 
-	private String getExtension(String name) {
-		int dotIndex = name.lastIndexOf('.');
-		if (dotIndex == -1) {
-			return "";
-		}
-		return name.substring(dotIndex + 1);
-	}
 }

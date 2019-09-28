@@ -1,11 +1,11 @@
 package com.casualsuperman.portent;
 
 import java.io.IOException;
-import java.io.InputStream;
+import java.io.Reader;
 import java.nio.file.Path;
 
-public interface Templatable {
+public interface Artifact {
 	Path getPath();
 
-	InputStream getContents() throws IOException;
+	Reader getContents() throws IOException;
 }

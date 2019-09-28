@@ -2,8 +2,8 @@ package com.casualsuperman.portent;
 
 import java.util.List;
 
-public interface Template {
+public interface Archetype {
 	String getName();
 
-	List<Templatable> getTemplates();
+	List<Artifact> getTemplates();
 }

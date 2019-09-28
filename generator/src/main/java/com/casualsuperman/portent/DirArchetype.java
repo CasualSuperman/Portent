@@ -7,9 +7,9 @@ import java.util.List;
 
 @ToString
 @RequiredArgsConstructor
-public class DirTemplate implements Template {
+public class DirArchetype implements Archetype {
 	private final String name;
-	private final List<Templatable> files;
+	private final List<Artifact> files;
 
 	@Override
 	public String getName() {
@@ -17,7 +17,7 @@ public class DirTemplate implements Template {
 	}
 
 	@Override
-	public List<Templatable> getTemplates() {
+	public List<Artifact> getTemplates() {
 		return files;
 	}
 }

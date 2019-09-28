@@ -15,18 +15,18 @@ import java.nio.file.Paths;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
-public class TemplateLocatorTest {
+public class ArchetypeLocatorTest {
 	@Test
 	public void testTemplateDetection() throws IOException {
 		Path startingFolder = Paths.get("src", "test", "example");
 		Path templateFolder = startingFolder.resolve(Paths.get("src", "main", "templates"));
-		TemplateLocator locator = new TemplateLocator(templateFolder);
+		ArchetypeLocator locator = new ArchetypeLocator(templateFolder);
 		Files.walkFileTree(templateFolder, locator);
 		assertThat(locator.getTemplates(), allOf(
 				aMapWithSize(2),
 				hasEntry(equalTo("endpoint"), allOf(
-						hasName("endpoint"), Matchers.<Template>hasProperty("templates", containsInAnyOrder(
-								hasProperty("path", equalToObject(Paths.get("__var.filename__.java")))
+						hasName("endpoint"), Matchers.<Archetype>hasProperty("templates", containsInAnyOrder(
+								hasProperty("path", equalToObject(Paths.get("__filename__.java")))
 						))
 				)),
 				hasEntry(equalTo("search"), allOf(
@@ -38,17 +38,17 @@ public class TemplateLocatorTest {
 		));
 	}
 
-	public static Matcher<? super Template> hasName(String name) {
+	public static Matcher<? super Archetype> hasName(String name) {
 		return new TemplateNameMatcher(name);
 	}
 
 	@RequiredArgsConstructor
-	private static class TemplateNameMatcher extends BaseMatcher<Template> {
+	private static class TemplateNameMatcher extends BaseMatcher<Archetype> {
 		private final String name;
 
 		@Override
 		public boolean matches(Object actual) {
-			return actual instanceof Template && ((Template) actual).getName().equals(name);
+			return actual instanceof Archetype && ((Archetype) actual).getName().equals(name);
 		}
 
 		@Override

@@ -8,7 +8,7 @@ import java.nio.file.Path;
 
 @ToString
 @RequiredArgsConstructor
-public class FileTemplatable implements Templatable {
+public class FileArtifact implements Artifact {
 	private final File root;
 	private final Path path;
 
@@ -18,7 +18,7 @@ public class FileTemplatable implements Templatable {
 	}
 
 	@Override
-	public InputStream getContents() throws FileNotFoundException {
-		return new BufferedInputStream(new FileInputStream(root.toPath().resolve(path).toFile()));
+	public Reader getContents() throws FileNotFoundException {
+		return new BufferedReader(new FileReader(root.toPath().resolve(path).toFile()));
 	}
 }

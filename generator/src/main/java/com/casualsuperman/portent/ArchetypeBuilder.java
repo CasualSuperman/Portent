@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
-public class TemplateBuilder {
+public class ArchetypeBuilder {
 	private final Path basePath;
 	private final String name;
 	private final List<Path> files = new ArrayList<>();
@@ -16,11 +16,11 @@ public class TemplateBuilder {
 		this.files.add(file);
 	}
 
-	public Template build() {
-		List<Templatable> templates = new ArrayList<>(files.size());
+	public Archetype build() {
+		List<Artifact> templates = new ArrayList<>(files.size());
 		for (Path f : files) {
-			templates.add(new FileTemplatable(basePath.resolve(name).toFile(), f));
+			templates.add(new FileArtifact(basePath.resolve(name).toFile(), f));
 		}
-		return new DirTemplate(name, templates);
+		return new DirArchetype(name, templates);
 	}
 }

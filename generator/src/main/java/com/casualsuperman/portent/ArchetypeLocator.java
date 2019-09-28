@@ -11,25 +11,25 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @RequiredArgsConstructor
-public class TemplateLocator extends SimpleFileVisitor<Path> {
+public class ArchetypeLocator extends SimpleFileVisitor<Path> {
 	private final Path baseDir;
 
-	private final Map<String, TemplateBuilder> templates = new ConcurrentHashMap<>();
+	private final Map<String, ArchetypeBuilder> templates = new ConcurrentHashMap<>();
 
 	@Override
 	public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) {
 		Path rel = baseDir.relativize(file);
 		String templateName = rel.getName(0).toString();
-		TemplateBuilder builder = templates.computeIfAbsent(templateName,  n -> new TemplateBuilder(baseDir, n));
+		ArchetypeBuilder builder = templates.computeIfAbsent(templateName, n -> new ArchetypeBuilder(baseDir, n));
 		if (rel.getNameCount() > 1) {
 			builder.addFile(rel.subpath(1, rel.getNameCount()));
 		}
 		return FileVisitResult.CONTINUE;
 	}
 
-	public Map<String, Template> getTemplates() {
-		Map<String, Template> results = new HashMap<>();
-		for (Map.Entry<String, TemplateBuilder> templ : templates.entrySet()) {
+	public Map<String, Archetype> getTemplates() {
+		Map<String, Archetype> results = new HashMap<>();
+		for (Map.Entry<String, ArchetypeBuilder> templ : templates.entrySet()) {
 			results.put(templ.getKey(), templ.getValue().build());
 		}
 		return results;

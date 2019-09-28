@@ -1,0 +1,22 @@
+<project>
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>com.casualsuperman.portent</groupId>
+		<artifactId>parent</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+		<relativePath>_parent/pom.xml</relativePath>
+	</parent>
+
+	<groupId>com.casualsuperman</groupId>
+	<artifactId>portent</artifactId>
+	<packaging>pom</packaging>
+
+	<modules>
+		<module>_parent</module>
+		<module>generator</module>
+		<module>engines</module>
+		<module>plugin</module>
+		<module>cli</module>
+	</modules>
+</project>

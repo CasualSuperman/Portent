@@ -1,0 +1,15 @@
+<project>
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>com.casualsuperman.portent</groupId>
+		<artifactId>parent</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+		<relativePath>../_parent/pom.xml</relativePath>
+	</parent>
+
+	<groupId>com.casualsuperman</groupId>
+	<artifactId>portent-maven-plugin</artifactId>
+	<packaging>maven-plugin</packaging>
+
+</project>

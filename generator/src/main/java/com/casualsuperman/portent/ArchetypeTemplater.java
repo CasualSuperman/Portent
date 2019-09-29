@@ -74,6 +74,7 @@ public class ArchetypeTemplater {
 				try {
 					Path target = getArtifactTarget(relRoot, artifact.getKey().getPath(), context);
 					if (overwriteExisting || !target.toFile().exists()) {
+						Files.createDirectories(target.toFile().getParentFile().toPath());
 						Files.move(artifact.getValue(), target, StandardCopyOption.REPLACE_EXISTING);
 					} else {
 						log.debug("Skipping existing file {}", target);

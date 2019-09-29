@@ -4,6 +4,7 @@ import com.casualsuperman.portent.Context;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -34,7 +35,7 @@ public class FilenameUtils {
 
 		while (m.find()) {
 			String varName = m.group(1);
-			String value = getValue(context, varName);
+			String value = getValue(context.getVariables(), varName);
 			if (value != null) {
 				m.appendReplacement(sb, value);
 			}
@@ -44,13 +45,24 @@ public class FilenameUtils {
 		return sb.toString();
 	}
 
-	private static String getValue(Context context, String varName) {
-		Object value = context.getVariables().get(varName);
+	private static String getValue(Map<?, ?> context, String varName) {
+		Object value = context.get(varName);
+		if (value == null) {
+			// See if we have a multi-part identifier, and try to recurse into it.
+			String[] parts = varName.split("\\.", 2);
+			if (parts.length > 1) {
+				value = context.get(parts[0]);
+				if (value instanceof Map) {
+					//noinspection rawtypes
+					return getValue((Map) value, parts[1]);
+				}
+			}
+		}
 		try {
 			return (String) value;
 		} catch (ClassCastException ex) {
 			log.warn("Property '{}' is not a String, calling toString() instead", varName);
-			return value.toString();
+			return value.toString(); //NOSONAR: If the value is null, the cast to String will succeed.
 		}
 	}
 }

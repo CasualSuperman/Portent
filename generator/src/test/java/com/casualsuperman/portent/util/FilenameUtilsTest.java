@@ -71,6 +71,41 @@ public class FilenameUtilsTest {
 	}
 
 	@Test
+	public void testNestedVariable() {
+		String filename = "I own a __comp.any__ branded __food__ company!";
+		Context someContext = ctx("comp", Collections.singletonMap("any", "SubWay"), "food", "sandwich");
+		assertEquals("I own a SubWay branded sandwich company!", templateFilename(filename, someContext));
+	}
+
+	@Test
+	public void testOddlyNestedVariable() {
+		String filename = "I own a __comp.any.where__ branded __food__ company!";
+		Context someContext = ctx("comp", Collections.singletonMap("any.where", "SubWay"), "food", "sandwich");
+		assertEquals("I own a SubWay branded sandwich company!", templateFilename(filename, someContext));
+	}
+
+	@Test
+	public void testOnlyVariable() {
+		String filename = "__food__";
+		Context someContext = ctx("comp", Collections.singletonMap("any.where", "SubWay"), "food", "sandwich");
+		assertEquals("sandwich", templateFilename(filename, someContext));
+	}
+
+	@Test
+	public void testLeadingVariable() {
+		String filename = "__food__, yummy";
+		Context someContext = ctx("comp", Collections.singletonMap("any.where", "SubWay"), "food", "sandwich");
+		assertEquals("sandwich, yummy", templateFilename(filename, someContext));
+	}
+
+	@Test
+	public void testTrailingVariable() {
+		String filename = "Good __food__";
+		Context someContext = ctx("comp", Collections.singletonMap("any.where", "SubWay"), "food", "sandwich");
+		assertEquals("Good sandwich", templateFilename(filename, someContext));
+	}
+
+	@Test
 	public void testNonStringVariable() {
 		String filename = "I own a __company__!";
 		Object o = mock(Object.class);
@@ -79,13 +114,13 @@ public class FilenameUtilsTest {
 		assertEquals("I own a Nintendo Switch!", templateFilename(filename, someContext));
 	}
 
-	private static Context ctx(String... pairs) {
+	private static Context ctx(Object... pairs) {
 		if (pairs.length % 2 != 0) {
 			throw new IllegalStateException("must have an even number of arguments");
 		}
 		Map<String, Object> context = new HashMap<>();
 		for (int i = 0, l = pairs.length; i < l; i += 2) {
-			context.put(pairs[i], pairs[i + 1]);
+			context.put((String) pairs[i], pairs[i + 1]);
 		}
 		return ctx(context);
 	}

@@ -4,5 +4,5 @@ import java.io.Reader;
 import java.io.Writer;
 
 public interface TemplateEngine {
-	void writeTo(Reader reader, Context context, Writer writer);
+	void writeTo(String templateName, Reader reader, Context context, Writer writer);
 }

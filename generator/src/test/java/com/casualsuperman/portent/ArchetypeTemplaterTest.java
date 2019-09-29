@@ -78,7 +78,7 @@ public class ArchetypeTemplaterTest {
 	private static class BasicTemplateEngine implements TemplateEngine {
 		private static final Pattern INTERPOLATION = Pattern.compile("\\$\\{([^}]++)}");
 		@Override
-		public void writeTo(Reader reader, Context context, Writer writer) {
+		public void writeTo(String templateName, Reader reader, Context context, Writer writer) {
 			String data = readAll(reader);
 			StringBuffer result = new StringBuffer();
 			Matcher m = INTERPOLATION.matcher(data);

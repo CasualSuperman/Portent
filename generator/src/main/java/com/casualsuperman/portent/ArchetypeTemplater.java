@@ -62,8 +62,10 @@ public class ArchetypeTemplater {
 		public void performArtifactTemplating() {
 			Map<Artifact, Exception> failures = new HashMap<>();
 			for (Map.Entry<Artifact, Path> artifact : tempFiles.entrySet()) {
+				String templateName =
+						archetype.getName() + ":" + artifact.getKey().getPath() + "@" + instance.getInstanceName();
 				try (Writer writer = Files.newBufferedWriter(artifact.getValue(), charset)) {
-					templateEngine.writeTo(artifact.getKey().getContents(), context, writer);
+					templateEngine.writeTo(templateName, artifact.getKey().getContents(), context, writer);
 				} catch (final Exception e) {
 					failures.put(artifact.getKey(), e);
 				}

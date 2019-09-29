@@ -16,6 +16,7 @@ public class Instance {
 
 	/** The absolute location of the file containing the instance variables to load. */
 	private final File absLocation;
+	@Getter
 	/** The location of the file relative to the source root. */
 	private final Path relLocation;
 

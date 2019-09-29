@@ -18,11 +18,11 @@ import static org.hamcrest.Matchers.*;
 
 public class ArchetypeLocatorTest {
 	@Test
-	public void testTemplateDetection() throws IOException {
+	public void testTemplateDetection() {
 		Path startingFolder = Paths.get("src", "test", "example");
 		Path templateFolder = startingFolder.resolve(Paths.get("src", "main", "templates"));
 		ArchetypeLocator locator = new ArchetypeLocator(templateFolder);
-		Files.walkFileTree(templateFolder, locator);
+		locator.discover();
 		assertThat(locator.getTemplates(StandardCharsets.UTF_8), allOf(
 				aMapWithSize(2),
 				hasEntry(equalTo("endpoint"), allOf(

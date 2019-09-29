@@ -1,0 +1,27 @@
+<project>
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>com.casualsuperman.portent</groupId>
+		<artifactId>parent</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+		<relativePath>../_parent/pom.xml</relativePath>
+	</parent>
+
+	<artifactId>demo</artifactId>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>com.casualsuperman</groupId>
+				<artifactId>portent-maven-plugin</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+				<executions>
+					<execution>
+						<goals><goal>render</goal></goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>

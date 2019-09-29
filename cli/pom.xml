@@ -9,4 +9,12 @@
 	</parent>
 
 	<artifactId>cli</artifactId>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.casualsuperman.portent</groupId>
+			<artifactId>generator</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+	</dependencies>
 </project>

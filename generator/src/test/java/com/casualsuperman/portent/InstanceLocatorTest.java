@@ -18,12 +18,13 @@ public class InstanceLocatorTest {
 	@Test
 	public void testInstanceDiscovery() throws IOException {
 		Set<String> templateTypes = Collections.singleton("search");
-		Path root = new File("src/test/example/src/main/java").toPath();
+		File root = new File("src/test/example/src/main/java");
 		InstanceLocator locator = new InstanceLocator(root, templateTypes);
-		Files.walkFileTree(root, locator);
+		locator.discover();
 		assertThat(locator.getTemplateInstances(), allOf(
 				aMapWithSize(1),
-				hasEntry(equalTo("search"), contains(Paths.get("mydir/Instance.search")))
+				hasEntry(equalTo("search"), contains(
+						hasProperty("relLocation", equalTo(Paths.get("mydir/Instance.search")))))
 		));
 	}
 }

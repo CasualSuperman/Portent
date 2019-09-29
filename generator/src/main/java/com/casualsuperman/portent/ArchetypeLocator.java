@@ -2,6 +2,7 @@ package com.casualsuperman.portent;
 
 import lombok.RequiredArgsConstructor;
 
+import java.nio.charset.Charset;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
@@ -27,10 +28,10 @@ public class ArchetypeLocator extends SimpleFileVisitor<Path> {
 		return FileVisitResult.CONTINUE;
 	}
 
-	public Map<String, Archetype> getTemplates() {
+	public Map<String, Archetype> getTemplates(Charset charset) {
 		Map<String, Archetype> results = new HashMap<>();
 		for (Map.Entry<String, ArchetypeBuilder> templ : templates.entrySet()) {
-			results.put(templ.getKey(), templ.getValue().build());
+			results.put(templ.getKey(), templ.getValue().build(charset));
 		}
 		return results;
 	}

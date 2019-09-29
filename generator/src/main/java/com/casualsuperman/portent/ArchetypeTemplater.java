@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.*;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
@@ -17,10 +18,11 @@ import java.util.Map;
 @Slf4j
 @RequiredArgsConstructor
 public class ArchetypeTemplater {
-	private final Archetype archetype;
+	private final Archetype      archetype;
 	private final TemplateEngine templateEngine;
 	private final ContextFactory contextFactory;
 
+	private final Charset charset;
 	private final boolean overwriteExisting;
 
 	public void constructArchetype(File root, Instance i) {
@@ -58,7 +60,8 @@ public class ArchetypeTemplater {
 		public void performArtifactTemplating() {
 			Map<Artifact, Exception> failures = new HashMap<>();
 			for (Map.Entry<Artifact, Path> artifact : tempFiles.entrySet()) {
-				try (Writer writer = new BufferedWriter(new FileWriter(artifact.getValue().toFile()))) {
+				try (Writer writer = new BufferedWriter(new OutputStreamWriter(
+						new FileOutputStream(artifact.getValue().toFile()), charset))) {
 					templateEngine.writeTo(artifact.getKey().getContents(), context, writer);
 				} catch (final Exception e) {
 					failures.put(artifact.getKey(), e);

@@ -8,6 +8,7 @@ import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -22,7 +23,7 @@ public class ArchetypeLocatorTest {
 		Path templateFolder = startingFolder.resolve(Paths.get("src", "main", "templates"));
 		ArchetypeLocator locator = new ArchetypeLocator(templateFolder);
 		Files.walkFileTree(templateFolder, locator);
-		assertThat(locator.getTemplates(), allOf(
+		assertThat(locator.getTemplates(StandardCharsets.UTF_8), allOf(
 				aMapWithSize(2),
 				hasEntry(equalTo("endpoint"), allOf(
 						hasName("endpoint"), Matchers.<Archetype>hasProperty("artifacts", containsInAnyOrder(

@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
 import java.io.*;
+import java.nio.charset.Charset;
 import java.nio.file.Path;
 
 @ToString
@@ -13,6 +14,8 @@ public class FileArtifact implements Artifact {
 	private final File root;
 	private final Path path;
 
+	private final Charset charset;
+
 	@Override
 	public Path getPath() {
 		return path;
@@ -20,6 +23,7 @@ public class FileArtifact implements Artifact {
 
 	@Override
 	public Reader getContents() throws FileNotFoundException {
-		return new BufferedReader(new FileReader(root.toPath().resolve(path).toFile()));
+		File file = root.toPath().resolve(path).toFile();
+		return new InputStreamReader(new BufferedInputStream(new FileInputStream(file)), charset);
 	}
 }

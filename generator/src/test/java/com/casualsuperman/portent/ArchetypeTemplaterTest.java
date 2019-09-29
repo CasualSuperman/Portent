@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import java.io.*;
-import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
@@ -31,7 +31,7 @@ public class ArchetypeTemplaterTest {
 		when(archetype.getArtifacts()).thenReturn(artifacts);
 		TemplateEngine engine = new BasicTemplateEngine();
 		ContextFactory factory = new ContextFactory(Collections.emptyMap());
-		ArchetypeTemplater templater = new ArchetypeTemplater(archetype, engine, factory, false);
+		ArchetypeTemplater templater = new ArchetypeTemplater(archetype, engine, factory, StandardCharsets.UTF_8, false);
 
 		Instance i = getMockInstance();
 

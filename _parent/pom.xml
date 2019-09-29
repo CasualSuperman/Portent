@@ -6,6 +6,26 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
+	<issueManagement>
+		<system>gitlab</system>
+		<url>https://gitlab.com/CasualSuperman/portent/issues</url>
+	</issueManagement>
+
+	<inceptionYear>2019</inceptionYear>
+	<licenses>
+		<license>
+			<name>MIT License</name>
+			<url>https://mit-license.org/</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<scm>
+		<connection>scm:git:https://gitlab.com/CasualSuperman/portent.git</connection>
+		<developerConnection>scm:git:git@gitlab.com:CasualSuperman/portent.git</developerConnection>
+		<url>https://gitlab.com/CasualSuperman/portent</url>
+	</scm>
+
 	<properties>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>

@@ -7,10 +7,7 @@ import com.casualsuperman.portent.util.FilenameUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
@@ -61,10 +58,8 @@ public class ArchetypeTemplater {
 		public void performArtifactTemplating() {
 			Map<Artifact, Exception> failures = new HashMap<>();
 			for (Map.Entry<Artifact, Path> artifact : tempFiles.entrySet()) {
-				try {
-					templateEngine.writeTo(artifact.getKey().getContents(),
-					                       context,
-					                       new BufferedWriter(new FileWriter(artifact.getValue().toFile())));
+				try (Writer writer = new BufferedWriter(new FileWriter(artifact.getValue().toFile()))) {
+					templateEngine.writeTo(artifact.getKey().getContents(), context, writer);
 				} catch (final Exception e) {
 					failures.put(artifact.getKey(), e);
 				}

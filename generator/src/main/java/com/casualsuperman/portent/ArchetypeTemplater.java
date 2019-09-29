@@ -36,6 +36,8 @@ public class ArchetypeTemplater {
 		}
 	}
 
+	// TODO: Warn or error if target filenames will overlap after templating.
+	// TODO: Should we skip performing templating if the target file already exists?
 	private class InstanceTemplater {
 		private final Instance instance;
 		private final Context context;
@@ -60,8 +62,7 @@ public class ArchetypeTemplater {
 		public void performArtifactTemplating() {
 			Map<Artifact, Exception> failures = new HashMap<>();
 			for (Map.Entry<Artifact, Path> artifact : tempFiles.entrySet()) {
-				try (Writer writer = new BufferedWriter(new OutputStreamWriter(
-						new FileOutputStream(artifact.getValue().toFile()), charset))) {
+				try (Writer writer = Files.newBufferedWriter(artifact.getValue(), charset)) {
 					templateEngine.writeTo(artifact.getKey().getContents(), context, writer);
 				} catch (final Exception e) {
 					failures.put(artifact.getKey(), e);

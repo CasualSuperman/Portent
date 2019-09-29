@@ -14,12 +14,15 @@ public class Instance {
 	private static final TypeReference<HashMap<String, Object>> TYPE = new TypeReference<HashMap<String, Object>>() {};
 	private static final ObjectMapper mapper = new ObjectMapper();
 
-
+	/** The absolute location of the file containing the instance variables to load. */
 	private final File absLocation;
+	/** The location of the file relative to the source root. */
 	private final Path relLocation;
 
+	/** The effective package name, based on {@link #relLocation}. */
 	@Getter
 	private final String packageName;
+	/** The filename of the instance, with the archetype name removed. */
 	@Getter
 	private final String instanceName;
 

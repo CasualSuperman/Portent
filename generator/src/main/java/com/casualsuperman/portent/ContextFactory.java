@@ -38,7 +38,7 @@ public class ContextFactory {
 	private Map<String, Object> getDefaultInstanceVars(Instance instance) {
 		Map<String, Object> vars = new HashMap<>();
 		vars.put("package", instance.getPackageName());
-		vars.put("filename", instance.getInstanceName());
+		vars.put("name", instance.getInstanceName());
 		return vars;
 	}
 }

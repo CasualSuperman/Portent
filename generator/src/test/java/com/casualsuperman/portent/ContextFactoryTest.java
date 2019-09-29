@@ -26,7 +26,7 @@ public class ContextFactoryTest {
 		assertThat(context.getVariables(), allOf(
 				aMapWithSize(3),
 				(Matcher) hasEntry(equalTo("wax"), allOf(aMapWithSize(1), hasEntry("quail", "multi-jump"))),
-				hasEntry("filename", "wacky"),
+				hasEntry("name", "wacky"),
 				hasEntry("package", "")
 		));
 	}

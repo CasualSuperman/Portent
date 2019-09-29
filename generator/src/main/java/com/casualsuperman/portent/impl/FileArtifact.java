@@ -1,5 +1,6 @@
-package com.casualsuperman.portent;
+package com.casualsuperman.portent.impl;
 
+import com.casualsuperman.portent.Artifact;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 

@@ -1,12 +1,14 @@
-package com.casualsuperman.portent;
+package com.casualsuperman.portent.exceptions;
 
+import com.casualsuperman.portent.Artifact;
 import lombok.Getter;
 
 import java.util.Collections;
 import java.util.Map;
 
 @Getter
-public class FailedToProcessTemplatesException extends RuntimeException {
+@SuppressWarnings("squid:S1948")
+public class FailedToProcessTemplatesException extends ProcessingException {
 	private final Map<Artifact, Exception> failures;
 
 	public FailedToProcessTemplatesException(Map<Artifact, Exception> failures) {

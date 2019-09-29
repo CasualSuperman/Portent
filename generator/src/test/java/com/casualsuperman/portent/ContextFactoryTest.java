@@ -1,5 +1,6 @@
 package com.casualsuperman.portent;
 
+import com.casualsuperman.portent.exceptions.ContextLoadException;
 import org.hamcrest.Matcher;
 import org.junit.jupiter.api.Test;
 

@@ -1,5 +1,9 @@
 package com.casualsuperman.portent;
 
+import com.casualsuperman.portent.exceptions.EnvironmentException;
+import com.casualsuperman.portent.exceptions.FailedToMoveTemplateResultsException;
+import com.casualsuperman.portent.exceptions.FailedToProcessTemplatesException;
+import com.casualsuperman.portent.util.FilenameUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -50,7 +54,7 @@ public class ArchetypeTemplater {
 					tempFiles.put(artifact, Files.createTempFile(artifact.getPath().getFileName().toString(), ".tmp"));
 				}
 			} catch (IOException ex) {
-				throw new TemplatingFailedException("failed to create temp files", ex);
+				throw new EnvironmentException("failed to create temp files", ex);
 			}
 		}
 
@@ -109,7 +113,7 @@ public class ArchetypeTemplater {
 		}
 
 		private Path getArtifactTarget(File root, Path path, Context context) {
-			String fileName = AbstractTemplateEngine.templateFilename(path.getFileName().toString(), context);
+			String fileName = FilenameUtils.templateFilename(path.getFileName().toString(), context);
 			return root.toPath().resolve(path.resolveSibling(fileName));
 		}
 	}

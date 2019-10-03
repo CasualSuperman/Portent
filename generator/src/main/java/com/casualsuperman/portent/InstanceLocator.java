@@ -1,7 +1,6 @@
 package com.casualsuperman.portent;
 
 import com.casualsuperman.portent.exceptions.EnvironmentException;
-import com.casualsuperman.portent.util.FilenameUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,13 +14,15 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class InstanceLocator {
 	private final File root;
-	private final Set<String> templateTypes;
+	private final List<String> templateTypes;
 
 	private Map<String, List<Instance>> instances = null;
 
 	public InstanceLocator(File root, Set<String> templateTypes) {
 		this.root = root;
-		this.templateTypes = templateTypes;
+		this.templateTypes = new ArrayList<>(templateTypes);
+		// Longest to shortest
+		this.templateTypes.sort(Comparator.comparing(String::length).reversed());
 	}
 
 	public synchronized void discover() {
@@ -32,10 +33,12 @@ public class InstanceLocator {
 					@Override
 					public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) {
 						String name = file.getFileName().toString();
-						String extension = FilenameUtils.getExtension(name);
-						if (templateTypes.contains(extension)) {
-							instances.computeIfAbsent(extension, t -> new ArrayList<>())
-									.add(new Instance(root, root.toPath().relativize(file)));
+						for (String type : templateTypes) {
+							if (name.endsWith('.' + type)) {
+								instances.computeIfAbsent(type, t -> new ArrayList<>())
+										.add(new Instance(root, root.toPath().relativize(file)));
+								break;
+							}
 						}
 						return FileVisitResult.CONTINUE;
 					}

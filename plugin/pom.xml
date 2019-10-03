@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>com.casualsuperman.portent</groupId>
 		<artifactId>parent</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>0.1.0-SNAPSHOT</version>
 		<relativePath>../_parent/pom.xml</relativePath>
 	</parent>
 
@@ -22,12 +22,10 @@
 		<dependency>
 			<groupId>com.casualsuperman.portent</groupId>
 			<artifactId>generator</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.casualsuperman.portent.engines</groupId>
 			<artifactId>velocity</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>

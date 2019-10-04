@@ -31,6 +31,10 @@
 		</snapshotRepository>
 	</distributionManagement>
 
+	<scm>
+		<url>https://gitlab.com/CasualSuperman/portent</url>
+	</scm>
+
 	<developers>
 		<developer>
 			<name>Robert Wertman</name>

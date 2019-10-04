@@ -1,8 +1,5 @@
 <project>
 	<modelVersion>4.0.0</modelVersion>
-	<properties>
-		<jackson.version>2.9.10</jackson.version>
-	</properties>
 
 	<parent>
 		<groupId>com.casualsuperman.portent</groupId>
@@ -12,6 +9,10 @@
 	</parent>
 
 	<artifactId>generator</artifactId>
+
+	<properties>
+		<jackson.version>2.10.0</jackson.version>
+	</properties>
 
 	<dependencies>
 		<dependency>

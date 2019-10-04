@@ -141,13 +141,16 @@
 				<inherited>true</inherited>
 				<executions>
 					<execution>
+						<id>default-cli</id>
 						<goals><goal>prepare</goal></goals>
 						<configuration>
 							<pushChanges>false</pushChanges>
-							<tagNameFormat>v@{project.version}</tagNameFormat>
 						</configuration>
 					</execution>
 				</executions>
+				<configuration>
+					<tagNameFormat>v@{project.version}</tagNameFormat>
+				</configuration>
 			</plugin>
 		</plugins>
 

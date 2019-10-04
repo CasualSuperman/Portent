@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>com.casualsuperman.portent</groupId>
 		<artifactId>parent</artifactId>
-		<version>0.1.0</version>
+		<version>0.1.1-SNAPSHOT</version>
 		<relativePath>_parent/pom.xml</relativePath>
 	</parent>
 
@@ -19,7 +19,7 @@
 	<scm>
 		<connection>scm:git:https://gitlab.com/CasualSuperman/portent.git</connection>
 		<developerConnection>scm:git:git@gitlab.com:CasualSuperman/portent.git</developerConnection>
-	  <tag>v0.1.0</tag>
+	  <tag>HEAD</tag>
   </scm>
 
 	<modules>

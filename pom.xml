@@ -16,6 +16,12 @@
 	<description>Where the magic happens.</description>
 	<url>https://gitlab.com/CasualSuperman/portent/</url>
 
+	<scm>
+		<connection>scm:git:https://gitlab.com/CasualSuperman/portent.git</connection>
+		<developerConnection>scm:git:git@gitlab.com:CasualSuperman/portent.git</developerConnection>
+		<url>https://gitlab.com/CasualSuperman/portent</url>
+	</scm>
+
 	<modules>
 		<module>_parent</module>
 		<module>generator</module>

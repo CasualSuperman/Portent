@@ -11,6 +11,11 @@
 	<groupId>com.casualsuperman.portent.engines</groupId>
 	<artifactId>velocity</artifactId>
 
+
+	<name>Portent Velocity Engine</name>
+	<description>Support for the using the Velocity engine with Portent</description>
+	<url>https://gitlab.com/CasualSuperman/portent/</url>
+
 	<dependencies>
 		<dependency>
 			<groupId>com.casualsuperman.portent</groupId>

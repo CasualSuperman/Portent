@@ -8,6 +8,10 @@
 		<relativePath>../_parent/pom.xml</relativePath>
 	</parent>
 
+	<name>Portent Engines Parent Pom</name>
+	<description>A parent pom for the engines supported by the portent project</description>
+	<url>https://gitlab.com/CasualSuperman/portent/</url>
+
 	<artifactId>engines</artifactId>
 	<packaging>pom</packaging>
 

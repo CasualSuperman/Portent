@@ -12,6 +12,10 @@
 	<artifactId>portent</artifactId>
 	<packaging>pom</packaging>
 
+	<name>Portent Aggregator Pom</name>
+	<description>Where the magic happens.</description>
+	<url>https://gitlab.com/CasualSuperman/portent/</url>
+
 	<modules>
 		<module>_parent</module>
 		<module>generator</module>

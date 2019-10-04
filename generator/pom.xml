@@ -10,6 +10,10 @@
 
 	<artifactId>generator</artifactId>
 
+	<name>Portent Generator</name>
+	<description>The meat and potatoes of the Portent code generator</description>
+	<url>https://gitlab.com/CasualSuperman/portent/</url>
+
 	<properties>
 		<jackson.version>2.10.0</jackson.version>
 	</properties>

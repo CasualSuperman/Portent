@@ -8,6 +8,10 @@
 		<relativePath>../_parent/pom.xml</relativePath>
 	</parent>
 
+	<name>Portent command line application</name>
+	<description>A command line application for the portent</description>
+	<url>https://gitlab.com/CasualSuperman/portent/</url>
+
 	<artifactId>cli</artifactId>
 
 	<dependencies>

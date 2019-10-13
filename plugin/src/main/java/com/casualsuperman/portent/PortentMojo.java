@@ -14,9 +14,9 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
-@Mojo(name = "render", defaultPhase = LifecyclePhase.GENERATE_SOURCES, requiresProject = true)
+@Mojo(name = "render", defaultPhase = LifecyclePhase.GENERATE_SOURCES)
 public class PortentMojo extends AbstractMojo {
-	@Parameter(defaultValue = "${project.compileSourceRoots}", readonly = true, required = true)
+	@Parameter(defaultValue = "${project.compileSourceRoots}", required = true)
 	private List<String> compileSourceRoots;
 
 	@Parameter(property = "templateDirectory", defaultValue = "src/main/templates")
@@ -28,13 +28,13 @@ public class PortentMojo extends AbstractMojo {
 	@Parameter(property = "sourceEncoding", defaultValue = "${project.build.sourceEncoding}")
 	private String encoding;
 
-	@Parameter(property = "failIfNoTemplates", defaultValue = "true", readonly = true)
+	@Parameter(property = "failIfNoTemplates", defaultValue = "true")
 	private boolean failIfNoTemplates;
 
-	@Parameter(property = "failIfNoInstances", defaultValue = "true", readonly = true)
+	@Parameter(property = "failIfNoInstances", defaultValue = "true")
 	private boolean failIfNoInstances;
 
-	@Parameter(property = "overwriteExisting", defaultValue = "false", readonly = true)
+	@Parameter(property = "overwriteExisting", defaultValue = "false")
 	private boolean overwriteExisting;
 
 	@Parameter(readonly = true, required = true, defaultValue = "${project}")

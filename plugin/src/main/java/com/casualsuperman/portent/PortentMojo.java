@@ -96,6 +96,8 @@ public class PortentMojo extends AbstractMojo {
 			instanceGroup.getValue().parallelStream().forEach(instance ->
 					templater.constructArchetype(generatedSourcesDirectory, instance, overwrite));
 		});
+		String relDest = project.getBasedir().toPath().relativize(generatedSourcesDirectory.toPath()).toString();
+		project.addCompileSourceRoot(relDest);
 	}
 
 	private boolean isSourceRoot(File dir) {

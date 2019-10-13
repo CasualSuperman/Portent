@@ -10,6 +10,7 @@ import org.apache.maven.project.MavenProject;
 
 import java.io.File;
 import java.nio.charset.Charset;
+import java.nio.file.Path;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -28,14 +29,24 @@ public class PortentMojo extends AbstractMojo {
 	@Parameter(property = "sourceEncoding", defaultValue = "${project.build.sourceEncoding}")
 	private String encoding;
 
+	/**
+	 * Should Portent fail execution if no templates are found. Defaults to <code>true</code>.
+	 */
 	@Parameter(property = "failIfNoTemplates", defaultValue = "true")
 	private boolean failIfNoTemplates;
 
+	/**
+	 * Should Portent fail execution if no instances of a template are found. Defaults to <code>true</code>.
+	 */
 	@Parameter(property = "failIfNoInstances", defaultValue = "true")
 	private boolean failIfNoInstances;
 
-	@Parameter(property = "overwriteExisting", defaultValue = "false")
-	private boolean overwriteExisting;
+	/**
+	 * Should Portent overwrite existing files. Possible values are <code>ALWAYS</code>, <code>NEVER</code>,
+	 * and <code>NON_SOURCE_FILES</code>. Defaults to <code>NON_SOURCE_FILES</code>.
+	 */
+	@Parameter(property = "overwriteExisting", defaultValue = "NON_SOURCE_FILES")
+	private OverwriteBehavior overwriteExisting;
 
 	@Parameter(readonly = true, required = true, defaultValue = "${project}")
 	private MavenProject project;
@@ -61,15 +72,40 @@ public class PortentMojo extends AbstractMojo {
 			return;
 		}
 
+		boolean overwrite;
+		switch (overwriteExisting) {
+			case NEVER:
+				overwrite = false;
+				break;
+			case ALWAYS:
+				overwrite = true;
+				break;
+			case NON_SOURCE_FILES:
+				overwrite = !isSourceRoot(generatedSourcesDirectory);
+				break;
+			default:
+				throw new IllegalArgumentException("unable to determine overwrite behavior");
+		}
+
 		TemplateEngine engine = getTemplateEngine();
 		ContextFactory contextFactory = new ContextFactory(getGlobalVars());
 		instances.entrySet().parallelStream().forEach(instanceGroup -> {
 			Archetype archetype = archetypes.get(instanceGroup.getKey());
 			ArchetypeTemplater templater = new ArchetypeTemplater(archetype, engine, contextFactory,
-			                                                      charset, overwriteExisting);
+			                                                      charset);
 			instanceGroup.getValue().parallelStream().forEach(instance ->
-					templater.constructArchetype(generatedSourcesDirectory, instance));
+					templater.constructArchetype(generatedSourcesDirectory, instance, overwrite));
 		});
+	}
+
+	private boolean isSourceRoot(File dir) {
+		Path basePath = project.getBasedir().toPath();
+		for (String sourceRoot : compileSourceRoots) {
+			if (basePath.resolve(sourceRoot).toFile().equals(dir)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	private Map<String, Object> getGlobalVars() {

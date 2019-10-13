@@ -23,10 +23,9 @@ public class ArchetypeTemplater {
 	private final ContextFactory contextFactory;
 
 	private final Charset charset;
-	private final boolean overwriteExisting;
 
-	public void constructArchetype(File root, Instance i) {
-		InstanceTemplater templater = new InstanceTemplater(i);
+	public void constructArchetype(File root, Instance i, boolean overwriteExisting) {
+		InstanceTemplater templater = new InstanceTemplater(i, overwriteExisting);
 		try {
 			templater.createTempFiles();
 			templater.performArtifactTemplating();
@@ -41,12 +40,14 @@ public class ArchetypeTemplater {
 	private class InstanceTemplater {
 		private final Instance instance;
 		private final Context context;
+		private final boolean overwriteExisting;
 
 		private final Map<Artifact, Path> tempFiles = new HashMap<>();
 
-		public InstanceTemplater(Instance instance) {
+		public InstanceTemplater(Instance instance, boolean overwriteExisting) {
 			this.instance = instance;
 			this.context = contextFactory.getContext(instance);
+			this.overwriteExisting = overwriteExisting;
 		}
 
 		public void createTempFiles() {

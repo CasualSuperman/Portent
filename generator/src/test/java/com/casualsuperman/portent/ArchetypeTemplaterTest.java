@@ -31,11 +31,11 @@ public class ArchetypeTemplaterTest {
 		when(archetype.getArtifacts()).thenReturn(artifacts);
 		TemplateEngine engine = new BasicTemplateEngine();
 		ContextFactory factory = new ContextFactory(Collections.emptyMap());
-		ArchetypeTemplater templater = new ArchetypeTemplater(archetype, engine, factory, StandardCharsets.UTF_8, false);
+		ArchetypeTemplater templater = new ArchetypeTemplater(archetype, engine, factory, StandardCharsets.UTF_8);
 
 		Instance i = getMockInstance();
 
-		templater.constructArchetype(testFolder, i);
+		templater.constructArchetype(testFolder, i, false);
 
 		Path testPath = testFolder.toPath();
 		File application = testPath.resolve(Paths.get("com", "test", "Application.java")).toFile();

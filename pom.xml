@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
@@ -16,12 +17,6 @@
 	<description>Where the magic happens.</description>
 	<url>https://gitlab.com/CasualSuperman/portent/</url>
 
-	<scm>
-		<connection>scm:git:https://gitlab.com/CasualSuperman/portent.git</connection>
-		<developerConnection>scm:git:git@gitlab.com:CasualSuperman/portent.git</developerConnection>
-	  <tag>HEAD</tag>
-  </scm>
-
 	<modules>
 		<module>_parent</module>
 		<module>generator</module>
@@ -30,4 +25,10 @@
 		<module>cli</module>
 		<module>demo</module>
 	</modules>
+
+	<scm>
+		<connection>scm:git:https://gitlab.com/CasualSuperman/portent.git</connection>
+		<developerConnection>scm:git:git@gitlab.com:CasualSuperman/portent.git</developerConnection>
+	  <tag>HEAD</tag>
+  </scm>
 </project>

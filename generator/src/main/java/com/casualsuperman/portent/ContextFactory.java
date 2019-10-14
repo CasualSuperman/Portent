@@ -20,6 +20,8 @@ public class ContextFactory {
 
 	/**
 	 * Puts in global variables, followed by instance meta-variables, followed by variables loaded by the instance.
+	 * @param instance The instance to compute context for.
+	 * @return The context for the provided instance.
 	 */
 	@NonNull
 	public Context getContext(Instance instance) {

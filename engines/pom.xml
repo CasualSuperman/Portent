@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>com.casualsuperman.portent</groupId>
 		<artifactId>parent</artifactId>
-		<version>0.2.1</version>
+		<version>0.2.2-SNAPSHOT</version>
 		<relativePath>../_parent/pom.xml</relativePath>
 	</parent>
 

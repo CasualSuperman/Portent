@@ -15,7 +15,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
-@Mojo(name = "render", defaultPhase = LifecyclePhase.GENERATE_SOURCES)
+@Mojo(name = "render", defaultPhase = LifecyclePhase.GENERATE_SOURCES, threadSafe = true)
 public class PortentMojo extends AbstractMojo {
 	@Parameter(defaultValue = "${project.compileSourceRoots}", required = true)
 	private List<String> compileSourceRoots;

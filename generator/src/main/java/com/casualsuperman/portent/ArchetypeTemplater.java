@@ -26,23 +26,24 @@ public class ArchetypeTemplater {
 
 	public void constructArchetype(File root, Instance i, boolean overwriteExisting) {
 		InstanceTemplater templater = new InstanceTemplater(i, overwriteExisting);
+		
 		try {
-			templater.createTempFiles();
+			templater.createTempFiles(root);
 			templater.performArtifactTemplating();
-			templater.moveTempFiles(root);
+			templater.moveTempFiles();
 		} finally {
 			templater.deleteTempFiles();
 		}
 	}
 
 	// TODO: Warn or error if target filenames will overlap after templating.
-	// TODO: Should we skip performing templating if the target file already exists?
 	private class InstanceTemplater {
 		private final Instance instance;
 		private final Context context;
 		private final boolean overwriteExisting;
 
 		private final Map<Artifact, Path> tempFiles = new HashMap<>();
+		private final Map<Artifact, Path> targetFiles = new HashMap<>();
 
 		public InstanceTemplater(Instance instance, boolean overwriteExisting) {
 			this.instance = instance;
@@ -50,10 +51,18 @@ public class ArchetypeTemplater {
 			this.overwriteExisting = overwriteExisting;
 		}
 
-		public void createTempFiles() {
+		public void createTempFiles(File root) {
 			try {
+				File relRoot = instance.getTargetDirectory(root);
 				for (Artifact artifact : archetype.getArtifacts()) {
-					tempFiles.put(artifact, Files.createTempFile(artifact.getPath().getFileName().toString(), ".tmp"));
+					Path path = artifact.getPath();
+					Path target = getArtifactTarget(relRoot, path, context);
+					if (overwriteExisting || !target.toFile().exists()) {
+						tempFiles.put(artifact, Files.createTempFile(path.getFileName().toString(), ".tmp"));
+						targetFiles.put(artifact, target);
+					} else {
+						log.debug("Skipping existing file {}", target);
+					}
 				}
 			} catch (IOException ex) {
 				throw new EnvironmentException("failed to create temp files", ex);
@@ -74,18 +83,13 @@ public class ArchetypeTemplater {
 			reportTemplatingFailures(failures);
 		}
 
-		public void moveTempFiles(File root) {
+		public void moveTempFiles() {
 			Map<Artifact, Exception> failures = new HashMap<>();
-			File relRoot = instance.getTargetDirectory(root);
 			for (Map.Entry<Artifact, Path> artifact : tempFiles.entrySet()) {
 				try {
-					Path target = getArtifactTarget(relRoot, artifact.getKey().getPath(), context);
-					if (overwriteExisting || !target.toFile().exists()) {
-						Files.createDirectories(target.toFile().getParentFile().toPath());
-						Files.move(artifact.getValue(), target, StandardCopyOption.REPLACE_EXISTING);
-					} else {
-						log.debug("Skipping existing file {}", target);
-					}
+					Path target = targetFiles.get(artifact.getKey());
+					Files.createDirectories(target.toFile().getParentFile().toPath());
+					Files.move(artifact.getValue(), target, StandardCopyOption.REPLACE_EXISTING);
 				} catch (IOException e) {
 					failures.put(artifact.getKey(), e);
 				}

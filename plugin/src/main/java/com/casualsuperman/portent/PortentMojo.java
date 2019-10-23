@@ -56,6 +56,9 @@ public class PortentMojo extends AbstractMojo {
 	@Parameter(readonly = true, required = true, defaultValue = "${project}")
 	private MavenProject project;
 
+	@Parameter(property = "templateEngine")
+	private TemplateEngine templateEngine = new VelocityTemplateEngine();
+
 	public void execute() throws MojoFailureException {
 		Charset charset = Charset.forName(encoding);
 
@@ -120,7 +123,7 @@ public class PortentMojo extends AbstractMojo {
 	}
 
 	private TemplateEngine getTemplateEngine() {
-		return new VelocityTemplateEngine();
+		return templateEngine;
 	}
 
 	private Map<String, Archetype> getArchetypes() {

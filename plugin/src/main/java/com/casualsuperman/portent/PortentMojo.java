@@ -18,17 +18,17 @@ import java.util.stream.Collectors;
 @Mojo(name = "render", defaultPhase = LifecyclePhase.GENERATE_SOURCES, threadSafe = true)
 public class PortentMojo extends AbstractMojo {
 	/** The directories to scan for files to render. */
-	@Parameter(property = "portent.sourceRoots", defaultValue = "${project.compileSourceRoots}")
+	@Parameter(property = "sourceRoots", defaultValue = "${project.compileSourceRoots}")
 	private List<String> sourceRoots;
 
 	/** The base directory to locate templates. */
-	@Parameter(property = "portent.templateDirectory", defaultValue = "src/main/templates")
+	@Parameter(property = "templateDirectory", defaultValue = "src/main/templates")
 	private File templateDir;
 
 	/** The directory to output generated files. */
-	@Parameter(property = "portent.generatedSourcesDirectory",
+	@Parameter(property = "outputDirectory",
 	           defaultValue = "${project.build.directory}/generated-sources/portent")
-	private File generatedSourcesDirectory;
+	private File outputDirectory;
 
 	/** The encoding to use for reading templates and writing generated files. */
 	@Parameter(property = "sourceEncoding", defaultValue = "${project.build.sourceEncoding}")
@@ -37,20 +37,20 @@ public class PortentMojo extends AbstractMojo {
 	/**
 	 * Should Portent fail execution if no templates are found. Defaults to <code>true</code>.
 	 */
-	@Parameter(property = "portent.failIfNoTemplates", defaultValue = "true")
+	@Parameter(property = "failIfNoTemplates", defaultValue = "true")
 	private boolean failIfNoTemplates;
 
 	/**
 	 * Should Portent fail execution if no instances of a template are found. Defaults to <code>true</code>.
 	 */
-	@Parameter(property = "portent.failIfNoInstances", defaultValue = "true")
+	@Parameter(property = "failIfNoInstances", defaultValue = "true")
 	private boolean failIfNoInstances;
 
 	/**
 	 * Should Portent overwrite existing files. Possible values are <code>ALWAYS</code>, <code>NEVER</code>,
 	 * and <code>NON_SOURCE_FILES</code>. Defaults to <code>NON_SOURCE_FILES</code>.
 	 */
-	@Parameter(property = "portent.overwriteExisting", defaultValue = "NON_SOURCE_FILES")
+	@Parameter(property = "overwriteExisting", defaultValue = "NON_SOURCE_FILES")
 	private OverwriteBehavior overwriteExisting;
 
 	@Parameter(readonly = true, required = true, defaultValue = "${project}")
@@ -89,7 +89,7 @@ public class PortentMojo extends AbstractMojo {
 				overwrite = true;
 				break;
 			case NON_SOURCE_FILES:
-				overwrite = !isSourceRoot(generatedSourcesDirectory);
+				overwrite = !isSourceRoot(outputDirectory);
 				break;
 			default:
 				throw new IllegalArgumentException("unable to determine overwrite behavior");
@@ -102,9 +102,9 @@ public class PortentMojo extends AbstractMojo {
 			ArchetypeTemplater templater = new ArchetypeTemplater(archetype, engine, contextFactory,
 			                                                      charset);
 			instanceGroup.getValue().parallelStream().forEach(instance ->
-					templater.constructArchetype(generatedSourcesDirectory, instance, overwrite));
+					templater.constructArchetype(outputDirectory, instance, overwrite));
 		});
-		String relDest = project.getBasedir().toPath().relativize(generatedSourcesDirectory.toPath()).toString();
+		String relDest = project.getBasedir().toPath().relativize(outputDirectory.toPath()).toString();
 		project.addCompileSourceRoot(relDest);
 	}
 

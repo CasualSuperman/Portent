@@ -17,16 +17,20 @@ import java.util.stream.Collectors;
 @Slf4j
 @Mojo(name = "render", defaultPhase = LifecyclePhase.GENERATE_SOURCES, threadSafe = true)
 public class PortentMojo extends AbstractMojo {
+	/** The directories to scan for files to render. */
 	@Parameter(property = "portent.sourceRoots", defaultValue = "${project.compileSourceRoots}")
 	private List<String> sourceRoots;
 
+	/** The base directory to locate templates. */
 	@Parameter(property = "portent.templateDirectory", defaultValue = "src/main/templates")
 	private File templateDir;
 
+	/** The directory to output generated files. */
 	@Parameter(property = "portent.generatedSourcesDirectory",
 	           defaultValue = "${project.build.directory}/generated-sources/portent")
 	private File generatedSourcesDirectory;
 
+	/** The encoding to use for reading templates and writing generated files. */
 	@Parameter(property = "sourceEncoding", defaultValue = "${project.build.sourceEncoding}")
 	private String encoding;
 

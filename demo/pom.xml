@@ -23,7 +23,20 @@
 				<version>${project.version}</version>
 				<executions>
 					<execution>
+						<id>jinja</id>
 						<goals><goal>render</goal></goals>
+						<configuration>
+							<templateDirectory>src/main/templates/jinja</templateDirectory>
+							<templateEngine implementation="com.casualsuperman.portent.JinjaTemplateEngine"/>
+						</configuration>
+					</execution>
+					<execution>
+						<id>velocity</id>
+						<goals><goal>render</goal></goals>
+						<configuration>
+							<templateDirectory>src/main/templates/velocity</templateDirectory>
+							<templateEngine implementation="com.casualsuperman.portent.VelocityTemplateEngine"/>
+						</configuration>
 					</execution>
 				</executions>
 			</plugin>

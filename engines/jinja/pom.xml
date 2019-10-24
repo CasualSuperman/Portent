@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>com.casualsuperman.portent</groupId>
+		<artifactId>parent</artifactId>
+		<version>0.2.2-SNAPSHOT</version>
+		<relativePath>../../_parent/pom.xml</relativePath>
+	</parent>
+
+	<groupId>com.casualsuperman.portent.engines</groupId>
+	<artifactId>jinja</artifactId>
+
+	<name>Portent Jinja Engine</name>
+	<description>Support for the using the Jinja engine with Portent</description>
+	<url>https://gitlab.com/CasualSuperman/portent/</url>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.casualsuperman.portent</groupId>
+			<artifactId>generator</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.hubspot.jinjava</groupId>
+			<artifactId>jinjava</artifactId>
+			<version>2.5.2</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<!-- Out of date, but matches the version used by jinjava -->
+			<version>22.0</version>
+		</dependency>
+	</dependencies>
+</project>

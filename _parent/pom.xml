@@ -62,6 +62,11 @@
 			</dependency>
 			<dependency>
 				<groupId>com.casualsuperman.portent.engines</groupId>
+				<artifactId>jinja</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.casualsuperman.portent.engines</groupId>
 				<artifactId>velocity</artifactId>
 				<version>${project.version}</version>
 			</dependency>

@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 import static org.mockito.Mockito.*;
 
 public class ArchetypeTemplaterTest {
@@ -24,7 +25,7 @@ public class ArchetypeTemplaterTest {
 	public File testFolder;
 
 	@Test
-	public void testArchetypeGeneration() throws FileNotFoundException {
+	public void testArchetypeGeneration() throws IOException {
 		Archetype archetype = mock(Archetype.class);
 		when(archetype.getName()).thenReturn("demo");
 		List<Artifact> artifacts = getMockedArtifacts();
@@ -35,6 +36,40 @@ public class ArchetypeTemplaterTest {
 
 		Instance i = getMockInstance();
 
+		File existingFile = new File(testFolder, "com/test/File.java");
+		assumeTrue(existingFile.getParentFile().mkdirs());
+		assumeTrue(existingFile.createNewFile());
+
+		templater.constructArchetype(testFolder, i, true);
+
+		Path testPath = testFolder.toPath();
+		File application = testPath.resolve(Paths.get("com", "test", "Application.java")).toFile();
+		File applicationImpl = testPath.resolve(Paths.get("com", "test", "ApplicationImpl.java")).toFile();
+		assertTrue(application.exists());
+		assertTrue(applicationImpl.exists());
+		verify(artifacts.get(2), times(1)).getContents();
+
+		assertEquals(readAll(getResource("Application.java")), readAll(new FileReader(application)));
+		assertEquals(readAll(getResource("ApplicationImpl.java")), readAll(new FileReader(applicationImpl)));
+		assertEquals(readAll(getResource("File.java")), readAll(new FileReader(existingFile)));
+	}
+
+	@Test
+	public void testArchetypeGenerationNoOverwrite() throws IOException {
+		Archetype archetype = mock(Archetype.class);
+		when(archetype.getName()).thenReturn("demo");
+		List<Artifact> artifacts = getMockedArtifacts();
+		when(archetype.getArtifacts()).thenReturn(artifacts);
+		TemplateEngine engine = new BasicTemplateEngine();
+		ContextFactory factory = new ContextFactory(Collections.emptyMap());
+		ArchetypeTemplater templater = new ArchetypeTemplater(archetype, engine, factory, StandardCharsets.UTF_8);
+
+		Instance i = getMockInstance();
+
+		File existingFile = new File(testFolder, "com/test/File.java");
+		assumeTrue(existingFile.getParentFile().mkdirs());
+		assumeTrue(existingFile.createNewFile());
+
 		templater.constructArchetype(testFolder, i, false);
 
 		Path testPath = testFolder.toPath();
@@ -42,9 +77,11 @@ public class ArchetypeTemplaterTest {
 		File applicationImpl = testPath.resolve(Paths.get("com", "test", "ApplicationImpl.java")).toFile();
 		assertTrue(application.exists());
 		assertTrue(applicationImpl.exists());
+		verify(artifacts.get(2), never()).getContents();
 
 		assertEquals(readAll(getResource("Application.java")), readAll(new FileReader(application)));
 		assertEquals(readAll(getResource("ApplicationImpl.java")), readAll(new FileReader(applicationImpl)));
+		assertEquals("", readAll(new FileReader(existingFile)), "Existing file should not be overwritten");
 	}
 
 	private Reader getResource(String resource) {
@@ -72,7 +109,10 @@ public class ArchetypeTemplaterTest {
 		when(two.getContents()).thenReturn(new StringReader("package ${package};\n" +
 				                                            "\n" +
 				                                            "public interface ${name} {}"));
-		return Arrays.asList(one, two);
+		Artifact three = mock(Artifact.class);
+		when(three.getPath()).thenReturn(Paths.get("File.java"));
+		when(three.getContents()).thenReturn(new StringReader("package ${package};"));
+		return Arrays.asList(one, two, three);
 	}
 
 	private static class BasicTemplateEngine implements TemplateEngine {

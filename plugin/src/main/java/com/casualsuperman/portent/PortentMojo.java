@@ -23,7 +23,7 @@ public class PortentMojo extends AbstractMojo {
 
 	/** The base directory to locate templates. */
 	@Parameter(property = "templateDirectory", defaultValue = "src/main/templates")
-	private File templateDir;
+	private File templateDirectory;
 
 	/** The directory to output generated files. */
 	@Parameter(property = "outputDirectory",
@@ -64,7 +64,7 @@ public class PortentMojo extends AbstractMojo {
 
 		Map<String, Archetype> archetypes = getArchetypes();
 		if (archetypes.isEmpty()) {
-			log.warn("No template definitions found in {}, nothing to do.", templateDir);
+			log.warn("No template definitions found in {}, nothing to do.", templateDirectory);
 			if (failIfNoTemplates) {
 				throw new MojoFailureException("No template definitions found");
 			}
@@ -127,7 +127,7 @@ public class PortentMojo extends AbstractMojo {
 	}
 
 	private Map<String, Archetype> getArchetypes() {
-		ArchetypeLocator locator = new ArchetypeLocator(templateDir.toPath());
+		ArchetypeLocator locator = new ArchetypeLocator(templateDirectory.toPath());
 		locator.discover();
 		return locator.getTemplates(Charset.forName(encoding));
 	}

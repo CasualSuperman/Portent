@@ -13,8 +13,10 @@ public class VelocityTemplateEngine implements TemplateEngine {
 	}
 
 	@Override
-	public void writeTo(String templateName, Reader reader, Context context, Writer writer) {
+	public void writeTo(Artifact artifact, Context context, Target target) throws IOException {
 		VelocityContext vContext = new VelocityContext(context.getVariables());
-		velocity.evaluate(vContext, writer, templateName, reader);
+		try (Reader reader = artifact.getContents(); Writer writer = target.getWriter()) {
+			velocity.evaluate(vContext, writer, target.getTargetId(), reader);
+		}
 	}
 }

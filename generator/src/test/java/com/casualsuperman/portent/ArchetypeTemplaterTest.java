@@ -117,16 +117,20 @@ public class ArchetypeTemplaterTest {
 
 	private static class BasicTemplateEngine implements TemplateEngine {
 		private static final Pattern INTERPOLATION = Pattern.compile("\\$\\{([^}]++)}");
+
 		@Override
-		public void writeTo(String templateName, Reader reader, Context context, Writer writer) {
-			String data = readAll(reader);
+		public void writeTo(Artifact artifact, Context context, Target target) throws IOException {
+			String data;
+			try (Reader contents = artifact.getContents()) {
+				data = readAll(contents);
+			}
 			StringBuffer result = new StringBuffer();
 			Matcher m = INTERPOLATION.matcher(data);
 			while (m.find()) {
 				m.appendReplacement(result, context.getVariables().get(m.group(1)).toString());
 			}
 			m.appendTail(result);
-			try {
+			try (Writer writer = target.getWriter()) {
 				writer.write(result.toString());
 			} catch (IOException e) {
 				throw new RuntimeException("failed to write template results", e);

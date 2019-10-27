@@ -4,6 +4,7 @@ import com.casualsuperman.portent.exceptions.EnvironmentException;
 import com.casualsuperman.portent.exceptions.FailedToMoveTemplateResultsException;
 import com.casualsuperman.portent.exceptions.FailedToProcessTemplatesException;
 import com.casualsuperman.portent.util.FilenameUtils;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -22,7 +23,7 @@ public class ArchetypeTemplater {
 	private final TemplateEngine templateEngine;
 	private final ContextFactory contextFactory;
 
-	private final Charset charset;
+	private final Charset targetCharset;
 
 	public void constructArchetype(File root, Instance i, boolean overwriteExisting) {
 		InstanceTemplater templater = new InstanceTemplater(i, overwriteExisting);
@@ -42,8 +43,7 @@ public class ArchetypeTemplater {
 		private final Context context;
 		private final boolean overwriteExisting;
 
-		private final Map<Artifact, Path> tempFiles = new HashMap<>();
-		private final Map<Artifact, Path> targetFiles = new HashMap<>();
+		private final Map<Artifact, TargetImpl> targets = new HashMap<>();
 
 		public InstanceTemplater(Instance instance, boolean overwriteExisting) {
 			this.instance = instance;
@@ -58,8 +58,10 @@ public class ArchetypeTemplater {
 					Path path = artifact.getPath();
 					Path target = getArtifactTarget(relRoot, path, context);
 					if (overwriteExisting || !target.toFile().exists()) {
-						tempFiles.put(artifact, Files.createTempFile(path.getFileName().toString(), ".tmp"));
-						targetFiles.put(artifact, target);
+						Path tempFile = Files.createTempFile(path.getFileName().toString(), ".tmp");
+						String templateName =
+								archetype.getName() + ":" + artifact.getPath() + "@" + instance.getInstanceName();
+						targets.put(artifact, new TargetImpl(tempFile, target, templateName));
 					} else {
 						log.debug("Skipping existing file {}", target);
 					}
@@ -71,12 +73,9 @@ public class ArchetypeTemplater {
 
 		public void performArtifactTemplating() {
 			Map<Artifact, Exception> failures = new HashMap<>();
-			for (Map.Entry<Artifact, Path> artifact : tempFiles.entrySet()) {
-				String templateName =
-						archetype.getName() + ":" + artifact.getKey().getPath() + "@" + instance.getInstanceName();
-				try (Reader contents = artifact.getKey().getContents();
-					 Writer writer = Files.newBufferedWriter(artifact.getValue(), charset)) {
-					templateEngine.writeTo(templateName, contents, context, writer);
+			for (Map.Entry<Artifact, TargetImpl> artifact : targets.entrySet()) {
+				try {
+					templateEngine.writeTo(artifact.getKey(), context, artifact.getValue());
 				} catch (final Exception e) {
 					failures.put(artifact.getKey(), e);
 				}
@@ -86,11 +85,9 @@ public class ArchetypeTemplater {
 
 		public void moveTempFiles() {
 			Map<Artifact, Exception> failures = new HashMap<>();
-			for (Map.Entry<Artifact, Path> artifact : tempFiles.entrySet()) {
+			for (Map.Entry<Artifact, TargetImpl> artifact : targets.entrySet()) {
 				try {
-					Path target = targetFiles.get(artifact.getKey());
-					Files.createDirectories(target.toFile().getParentFile().toPath());
-					Files.move(artifact.getValue(), target, StandardCopyOption.REPLACE_EXISTING);
+					artifact.getValue().moveFile();
 				} catch (IOException e) {
 					failures.put(artifact.getKey(), e);
 				}
@@ -99,12 +96,8 @@ public class ArchetypeTemplater {
 		}
 
 		private void deleteTempFiles() {
-			for (Path p : tempFiles.values()) {
-				try {
-					Files.deleteIfExists(p);
-				} catch (IOException e) {
-					log.warn("Failed to delete temporary file {}", p, e);
-				}
+			for (TargetImpl p : targets.values()) {
+				p.deleteTempFile();
 			}
 		}
 
@@ -123,6 +116,37 @@ public class ArchetypeTemplater {
 		private Path getArtifactTarget(File root, Path path, Context context) {
 			String fileName = FilenameUtils.templateFilename(path.getFileName().toString(), context);
 			return root.toPath().resolve(path.resolveSibling(fileName));
+		}
+	}
+
+	@RequiredArgsConstructor
+	private class TargetImpl implements Target {
+		private final Path tempFile;
+		private final Path destFile;
+		@Getter
+		private final String targetId;
+
+		@Override
+		public Path getTargetPath() {
+			return tempFile;
+		}
+
+		@Override
+		public Charset getCharset() {
+			return targetCharset;
+		}
+
+		public void moveFile() throws IOException {
+			Files.createDirectories(destFile.toFile().getParentFile().toPath());
+			Files.move(tempFile, destFile, StandardCopyOption.REPLACE_EXISTING);
+		}
+
+		public void deleteTempFile() {
+			try {
+				Files.deleteIfExists(tempFile);
+			} catch (IOException e) {
+				log.warn("Failed to delete temporary file {}", tempFile, e);
+			}
 		}
 	}
 }

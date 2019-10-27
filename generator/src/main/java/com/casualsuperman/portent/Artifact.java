@@ -8,4 +8,6 @@ public interface Artifact {
 	Path getPath();
 
 	Reader getContents() throws IOException;
+
+	String getArchetypeName();
 }

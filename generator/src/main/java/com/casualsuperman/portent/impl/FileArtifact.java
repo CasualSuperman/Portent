@@ -1,6 +1,7 @@
 package com.casualsuperman.portent.impl;
 
 import com.casualsuperman.portent.Artifact;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
@@ -12,6 +13,8 @@ import java.nio.file.Path;
 @ToString
 @RequiredArgsConstructor
 public class FileArtifact implements Artifact {
+	@Getter
+	private final String archetypeName;
 	private final File root;
 	private final Path path;
 

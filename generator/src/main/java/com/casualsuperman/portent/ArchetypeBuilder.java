@@ -23,7 +23,7 @@ public class ArchetypeBuilder {
 	public Archetype build(Charset charset) {
 		List<Artifact> templates = new ArrayList<>(files.size());
 		for (Path f : files) {
-			templates.add(new FileArtifact(basePath.resolve(name).toFile(), f, charset));
+			templates.add(new FileArtifact(name, basePath.resolve(name).toFile(), f, charset));
 		}
 		return new DirArchetype(name, templates);
 	}

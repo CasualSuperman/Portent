@@ -52,6 +52,10 @@
 		</dependency>
 		<dependency>
 			<groupId>com.casualsuperman.portent.engines</groupId>
+			<artifactId>freemarker</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.casualsuperman.portent.engines</groupId>
 			<artifactId>jinja</artifactId>
 		</dependency>
 		<dependency>

@@ -17,6 +17,7 @@
 	<url>https://gitlab.com/CasualSuperman/portent/</url>
 
 	<modules>
+		<module>freemarker</module>
 		<module>jinja</module>
 		<module>velocity</module>
 	</modules>

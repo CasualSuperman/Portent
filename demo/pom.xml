@@ -38,6 +38,24 @@
 							<templateEngine implementation="com.casualsuperman.portent.VelocityTemplateEngine" />
 						</configuration>
 					</execution>
+					<execution>
+						<id>freemarker-latest</id>
+						<goals><goal>render</goal></goals>
+						<configuration>
+							<templateDirectory>src/main/templates/freemarker/latest</templateDirectory>
+							<templateEngine implementation="com.casualsuperman.portent.FreemarkerTemplateEngine" />
+						</configuration>
+					</execution>
+					<execution>
+						<id>freemarker-legacy</id>
+						<goals><goal>render</goal></goals>
+						<configuration>
+							<templateDirectory>src/main/templates/freemarker/legacy</templateDirectory>
+							<templateEngine implementation="com.casualsuperman.portent.FreemarkerTemplateEngine">
+								<version>2.3.0</version>
+							</templateEngine>
+						</configuration>
+					</execution>
 				</executions>
 			</plugin>
 			<plugin>

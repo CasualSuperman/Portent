@@ -30,9 +30,13 @@ public class PortentMojo extends AbstractMojo {
 	           defaultValue = "${project.build.directory}/generated-sources/portent")
 	private File outputDirectory;
 
-	/** The encoding to use for reading templates and writing generated files. */
+	/** The encoding to use for reading templates. */
 	@Parameter(property = "sourceEncoding", defaultValue = "${project.build.sourceEncoding}")
-	private String encoding;
+	private String sourceEncoding;
+
+	/** The encoding to use for writing generated files. */
+	@Parameter(property = "targetEncoding", defaultValue = "${project.build.sourceEncoding}")
+	private String targetEncoding;
 
 	/**
 	 * Should Portent fail execution if no templates are found. Defaults to <code>true</code>.
@@ -60,7 +64,7 @@ public class PortentMojo extends AbstractMojo {
 	private TemplateEngine templateEngine = new VelocityTemplateEngine();
 
 	public void execute() throws MojoFailureException {
-		Charset charset = Charset.forName(encoding);
+		Charset targetCharset = Charset.forName(targetEncoding);
 
 		Map<String, Archetype> archetypes = getArchetypes();
 		if (archetypes.isEmpty()) {
@@ -100,7 +104,7 @@ public class PortentMojo extends AbstractMojo {
 		instances.entrySet().parallelStream().forEach(instanceGroup -> {
 			Archetype archetype = archetypes.get(instanceGroup.getKey());
 			ArchetypeTemplater templater = new ArchetypeTemplater(archetype, engine, contextFactory,
-			                                                      charset);
+			                                                      targetCharset);
 			instanceGroup.getValue().parallelStream().forEach(instance ->
 					templater.constructArchetype(outputDirectory, instance, overwrite));
 		});
@@ -129,7 +133,7 @@ public class PortentMojo extends AbstractMojo {
 	private Map<String, Archetype> getArchetypes() {
 		ArchetypeLocator locator = new ArchetypeLocator(templateDirectory.toPath());
 		locator.discover();
-		return locator.getTemplates(Charset.forName(encoding));
+		return locator.getTemplates(Charset.forName(sourceEncoding));
 	}
 
 	private Map<String, List<Instance>> getInstances(Map<String, Archetype> archetypes) {

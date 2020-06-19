@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>com.casualsuperman</groupId>
 		<artifactId>parent</artifactId>
-		<version>1.0.1</version>
+		<version>1.0.2</version>
 		<relativePath />
 	</parent>
 
@@ -96,7 +96,7 @@
 		<dependency>
 			<groupId>org.hamcrest</groupId>
 			<artifactId>hamcrest-library</artifactId>
-			<version>2.1</version>
+			<version>2.2</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>

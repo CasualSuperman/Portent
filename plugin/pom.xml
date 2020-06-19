@@ -21,6 +21,10 @@
 		<maven>[3.1.0,)</maven>
 	</prerequisites>
 
+	<properties>
+		<maven.version>3.6.3</maven.version>
+	</properties>
+
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -31,17 +35,17 @@
 			<dependency>
 				<groupId>org.apache.maven</groupId>
 				<artifactId>maven-model</artifactId>
-				<version>3.6.2</version>
+				<version>${maven.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.codehaus.plexus</groupId>
 				<artifactId>plexus-utils</artifactId>
-				<version>3.2.1</version>
+				<version>3.3.0</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.maven</groupId>
 				<artifactId>maven-artifact</artifactId>
-				<version>3.6.2</version>
+				<version>${maven.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -66,7 +70,7 @@
 		<dependency>
 			<groupId>org.apache.maven</groupId>
 			<artifactId>maven-plugin-api</artifactId>
-			<version>3.6.2</version>
+			<version>${maven.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.maven</groupId>
